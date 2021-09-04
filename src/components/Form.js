@@ -10,6 +10,12 @@ export default function Form(props){
 // 返り値を[]内に格納している。
     const [name,setName]=useState("");
 
+    // inputの変更をキャッチして、namestateに反映
+    function handleChange(e){
+        console.log(e.target.value);
+        setName(e.target.value);
+    }
+
     function handleSubmit(e){
         e.preventDefault();
         console.log("value is :"+e.target.value);
@@ -30,6 +36,7 @@ export default function Form(props){
         name="text"
         autoComplete="off"
         value={name}
+        onChange={handleChange}
       />
       <button type="submit" className="btn btn__primary btn__lg">
         Add
