@@ -12,14 +12,19 @@ export default function Form(props){
 
     // inputの変更をキャッチして、namestateに反映
     function handleChange(e){
-        console.log(e.target.value);
         setName(e.target.value);
     }
 
     function handleSubmit(e){
         e.preventDefault();
-        console.log("value is :"+e.target.value);
-        props.addTask("Say Hello!");
+        if(name===""){
+            alert("Task isn't setted!");
+        }else{
+
+        props.addTask(name);
+        setName("");
+
+        }
     }
 
     return(
