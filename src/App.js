@@ -6,7 +6,7 @@ import {nanoid} from "nanoid";
 
 
 function App(props){
-  console.log(props);
+  
 
   // tasksで受け取った値を初期値に設定＆tasksを更新する関数を設定
   const [tasks,setTasks]=useState(props.tasks);
@@ -17,14 +17,33 @@ function App(props){
     setTasks([...tasks,newTask])
   }
 
+  function toggleTaskCompleted(id){
+    const updatedTasks = tasks.map(task=>{
+      if(id === task.id){
+        return{...task, completed: !task.completed}
+      }
+      return task;
+    }) ;
+    setTasks(updatedTasks);
+  }
+  
+// delete機能
+function deleteTask(id){
+  console.log(id);
+}
+
   // 受け取ったDATAをtaskListへ格納
   const taskList = tasks.map(task => (
   <Todo 
     id={task.id}
     name={task.name}
     completed={task.completed}
-    key={task.id} />));
-  console.log(taskList);
+    key={task.id}
+    toggleTaskCompleted = {toggleTaskCompleted}
+    deleteTask={deleteTask} />));
+  
+    const tasksNoun = taskList.length !== 1 ? 'tasks':'task';
+    const headingText = `${taskList.length}${tasksNoun} remaining`; 
 
   return(
     <div className="todoapp stack-large">
@@ -36,7 +55,7 @@ function App(props){
      <FilterButton/>
     </div>
     <h2 id="list-heading">
-      3 tasks remaining
+      {headingText}
     </h2>
     <ul
       role="list"
