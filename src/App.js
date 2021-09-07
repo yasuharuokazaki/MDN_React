@@ -5,7 +5,7 @@ import FilterButton from "./components/FilterButton";
 import {nanoid} from "nanoid";
 
 
-function App(props){
+  function App(props){
   
 
   // tasksで受け取った値を初期値に設定＆tasksを更新する関数を設定
@@ -28,10 +28,21 @@ function App(props){
   }
   
 // delete機能
-function deleteTask(id){
-  const remainingTasks = tasks.filter(task=>id !== task.id);
-  setTasks(remainingTasks);
-}
+  function deleteTask(id){
+    const remainingTasks = tasks.filter(task=>id !== task.id);
+    setTasks(remainingTasks);
+  }
+
+// edit機能
+  function editTask(id,newName){
+    const editedTaskList = tasks.map(
+      task=>{if(id === task.id){
+        return{...task,name:newName}
+      }
+      return task;
+    });
+      setTasks(editedTaskList)
+  }
 
   // 受け取ったDATAをtaskListへ格納
   const taskList = tasks.map(task => (
@@ -42,7 +53,9 @@ function deleteTask(id){
     key={task.id}
     // callback function
     toggleTaskCompleted = {toggleTaskCompleted}
-    deleteTask={deleteTask} />));
+    deleteTask={deleteTask}
+    editTask={editTask} 
+    />));
   
     const tasksNoun = taskList.length !== 1 ? 'tasks':'task';
     const headingText = `${taskList.length}${tasksNoun} remaining`; 
