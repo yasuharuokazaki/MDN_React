@@ -29,7 +29,8 @@ function App(props){
   
 // delete機能
 function deleteTask(id){
-  console.log(id);
+  const remainingTasks = tasks.filter(task=>id !== task.id);
+  setTasks(remainingTasks);
 }
 
   // 受け取ったDATAをtaskListへ格納
@@ -39,6 +40,7 @@ function deleteTask(id){
     name={task.name}
     completed={task.completed}
     key={task.id}
+    // callback function
     toggleTaskCompleted = {toggleTaskCompleted}
     deleteTask={deleteTask} />));
   
