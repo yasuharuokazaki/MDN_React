@@ -4,9 +4,22 @@ import Form from "./components/Form";
 import FilterButton from "./components/FilterButton";
 import {nanoid} from "nanoid";
 
+// フィルタ用関数の詰め合わせオブジェクトを作成
+const FILTER_MAP = {
+  All:()=>true,
+  Active: task=> !task.completed,
+  Completed: task => task.completed
+};
+
+// フィルタネームの配列を作成
+const FILTER_NAMES = Object.keys(FILTER_MAP);
+
+
+
 
   function App(props){
-  
+  // create filterhook
+  const [filter,setFilter]=useState("All");
 
   // tasksで受け取った値を初期値に設定＆tasksを更新する関数を設定
   const [tasks,setTasks]=useState(props.tasks);
@@ -45,7 +58,9 @@ import {nanoid} from "nanoid";
   }
 
   // 受け取ったDATAをtaskListへ格納
-  const taskList = tasks.map(task => (
+  const taskList = tasks
+  .filter(FILTER_MAP[filter])
+  .map(task => (
   <Todo 
     id={task.id}
     name={task.name}
@@ -57,6 +72,14 @@ import {nanoid} from "nanoid";
     editTask={editTask} 
     />));
   
+    const filterList = FILTER_NAMES.map(name=>(
+      <FilterButton
+       key={name}
+       name={name}
+       isPressed={name === filter}
+       setFilter={setFilter}
+       />
+    ));
     const tasksNoun = taskList.length !== 1 ? 'tasks':'task';
     const headingText = `${taskList.length}${tasksNoun} remaining`; 
 
@@ -65,9 +88,7 @@ import {nanoid} from "nanoid";
     <h1>TodoMatic</h1>
       <Form addTask={addTask} />
     <div className="filters btn-group stack-exception">
-     <FilterButton/>
-     <FilterButton/>
-     <FilterButton/>
+     {filterList}
     </div>
     <h2 id="list-heading">
       {headingText}
